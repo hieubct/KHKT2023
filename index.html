@@ -52,23 +52,7 @@
                 scene.activeCamera.alpha += Math.PI;
             });
 
-            BABYLON.SceneLoader.ImportMesh("", "https://3d-mapper.com/wp-content/plugins/3D-Mapper/assets/elements/", "pin.glb", scene, function (meshes) {
-                meshes[1].material = new BABYLON.StandardMaterial("matPin", scene);
-                meshes[1].material.diffuseColor = BABYLON.Color3.FromHexString("#ff4302");
-                var pin65464a1b8f894 = BABYLON.Mesh.MergeMeshes([meshes[1], meshes[2], meshes[3], meshes[4], meshes[5], meshes[6], meshes[7], meshes[8], meshes[9], meshes[10]], true, true, false, false, true);
-                pin65464a1b8f894.name = "65464a1b8f8941666074557013";
-                pin65464a1b8f894.scaling = new BABYLON.Vector3(1, 1, 1);
-                pin65464a1b8f894.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, Math.PI, 0), 0);
-                pin65464a1b8f894.rotationQuaternion.x = 0;
-                pin65464a1b8f894.rotationQuaternion.y = 1;
-                pin65464a1b8f894.rotationQuaternion.z = 0;
-                pin65464a1b8f894.rotationQuaternion.w = 0;
-                pin65464a1b8f894.position.y = 15.459481;
-                pin65464a1b8f894.position.x = 31.971593;
-                pin65464a1b8f894.position.z = 22.395541;
-                pin65464a1b8f894.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
-                shadowGenerator65464a1b8f894.addShadowCaster(pin65464a1b8f894);
-            });
+            
 
             var markerText = "Grindelwald";
             var markerName = "1666074298578";
