@@ -1,9 +1,27 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
-
+<html>
     <head>
-        <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-        <title>Babylon Template</title>
+        <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+        <title>Babylon.js sample code</title>
+
+        <!-- Babylon.js -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/dat-gui/0.6.2/dat.gui.min.js"></script>
+        <script src="https://assets.babylonjs.com/generated/Assets.js"></script>
+        <script src="https://cdn.babylonjs.com/recast.js"></script>
+        <script src="https://cdn.babylonjs.com/ammo.js"></script>
+        <script src="https://cdn.babylonjs.com/havok/HavokPhysics_umd.js"></script>
+        <script src="https://cdn.babylonjs.com/cannon.js"></script>
+        <script src="https://cdn.babylonjs.com/Oimo.js"></script>
+        <script src="https://cdn.babylonjs.com/earcut.min.js"></script>
+        <script src="https://cdn.babylonjs.com/babylon.js"></script>
+        <script src="https://cdn.babylonjs.com/materialsLibrary/babylonjs.materials.min.js"></script>
+        <script src="https://cdn.babylonjs.com/proceduralTexturesLibrary/babylonjs.proceduralTextures.min.js"></script>
+        <script src="https://cdn.babylonjs.com/postProcessesLibrary/babylonjs.postProcess.min.js"></script>
+        <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.js"></script>
+        <script src="https://cdn.babylonjs.com/serializers/babylonjs.serializers.min.js"></script>
+        <script src="https://cdn.babylonjs.com/gui/babylon.gui.min.js"></script>
+        <script src="https://cdn.babylonjs.com/inspector/babylon.inspector.bundle.js"></script>
 
         <style>
             html, body {
@@ -13,59 +31,389 @@
                 margin: 0;
                 padding: 0;
             }
+
             #renderCanvas {
                 width: 100%;
                 height: 100%;
                 touch-action: none;
             }
+            
+            #canvasZone {
+                width: 100%;
+                height: 100%;
+            }
         </style>
-
-        <script src="https://cdn.babylonjs.com/babylon.js"></script>
-        <script src="https://cdn.babylonjs.com/loaders/babylonjs.loaders.min.js"></script>
-
     </head>
+<body>
+    <div id="canvasZone"><canvas id="renderCanvas"></canvas></div>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
 
-   <body>
+        var startRenderLoop = function (engine, canvas) {
+            engine.runRenderLoop(function () {
+                if (sceneToRender && sceneToRender.activeCamera) {
+                    sceneToRender.render();
+                }
+            });
+        }
 
-	<canvas id="renderCanvas"></canvas>
-
-	<script>
-        const canvas = document.getElementById("renderCanvas"); // Get the canvas element
-        const engine = new BABYLON.Engine(canvas, true); // Generate the BABYLON 3D engine
-        
-
+        var engine = null;
+        var scene = null;
+        var sceneToRender = null;
+        var createDefaultEngine = function() { return new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true,  disableWebGL2Support: false}); };
         var delayCreateScene = function () {
             // Create a scene.
             var scene = new BABYLON.Scene(engine);
-
+            
+        
             // Create a default skybox with an environment.
             //var hdrTexture = BABYLON.CubeTexture.CreateFromPrefilteredData("textures/environment.dds", scene);
             //var currentSkybox = scene.createDefaultSkybox(hdrTexture, true);
 
+            //Adding a light
+            // var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(20, 20, 100), scene);
+
+            // //Adding an Arc Rotate Camera
+            // var camera = new BABYLON.ArcRotateCamera("Camera", 30, 40, 60, BABYLON.Vector3.Zero(), scene);
+            // camera.attachControl(canvas, false);
+
+            
+        
             // Append glTF model to scene.
             BABYLON.SceneLoader.Append("/", "krn.glb", scene, function (scene) {
                 // Create a default arc rotate camera and light.
-                scene.createDefaultCameraOrLight(true, true, true);
+                //scene.createDefaultCameraOrLight(true, true, true);
+            //     const camera = new BABYLON.UniversalCamera("UniversalCamera", new BABYLON.Vector3(2, 5, -10), scene);
 
+            // // Targets the camera to a particular position. In this case the scene origin
+            // camera.setTarget(BABYLON.Vector3.Zero());
+
+            // // Attach the camera to the canvas
+            // camera.attachControl(canvas, true);
+        
                 // The default camera looks at the back of the asset.
                 // Rotate the camera by 180 degrees to the front of the asset.
-                scene.activeCamera.alpha += Math.PI;
+                // scene.activeCamera.alpha += Math.PI - 0.02;
+                // scene.activeCamera.beta -= Math.PI/4;
+                // scene.camera.useAutoRotationBehavior = true;
+                // scene.camera.autoRotationBehavior.idleRotationSpeed = 0.05;
+
+
+                var camera = new BABYLON.ArcRotateCamera("Camera", 1 * Math.PI / 2, Math.PI / 2.5, 20, BABYLON.Vector3.Zero(), scene);
+
+	camera.attachControl(canvas, true);
+
+    camera.lowerRadiusLimit = 15;
+    camera.upperRadiusLimit = 30;
+
+    camera.useAutoRotationBehavior = true;
+
+	var light = new BABYLON.HemisphericLight("hemi", new BABYLON.Vector3(0, 1, 0), scene);
             });
+
+            // // Núi Nâm Nung
+            // BABYLON.SceneLoader.ImportMesh("", "/", "pin.glb", scene, function (meshes) {
+            //     meshes[1].material = new BABYLON.StandardMaterial("matPin", scene);
+            //     meshes[1].material.diffuseColor = BABYLON.Color3.FromHexString("#027dff");
+            //     var pin65464a1b8f894 = BABYLON.Mesh.MergeMeshes([meshes[1], meshes[2], meshes[3], meshes[4], meshes[5], meshes[6], meshes[7], meshes[8], meshes[9], meshes[10]], true, true, false, false, true);
+            //     pin65464a1b8f894.name = "65464a1b8f8941666074500942";
+            //     pin65464a1b8f894.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
+            //     pin65464a1b8f894.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, Math.PI, 0), 0);
+            //     pin65464a1b8f894.rotationQuaternion.x = 0;
+            //     pin65464a1b8f894.rotationQuaternion.y = 1;
+            //     pin65464a1b8f894.rotationQuaternion.z = 0;
+            //     pin65464a1b8f894.rotationQuaternion.w = 0;
+            //     pin65464a1b8f894.position.y = 0.846329;
+            //     pin65464a1b8f894.position.x = 6.1;
+            //     pin65464a1b8f894.position.z = 5.296279;
+            //     pin65464a1b8f894.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+            //     shadowGenerator65464a1b8f894.addShadowCaster(pin65464a1b8f894);
+            // });
+
+            // Điểm đi Đắk Sôr
+            BABYLON.SceneLoader.ImportMesh("", "/", "pin.glb", scene, function (meshes) {
+                meshes[1].material = new BABYLON.StandardMaterial("matPin", scene);
+                meshes[1].material.diffuseColor = BABYLON.Color3.FromHexString("#027dff");
+                var pin65464a1b8f894 = BABYLON.Mesh.MergeMeshes([meshes[1], meshes[2], meshes[3], meshes[4], meshes[5], meshes[6], meshes[7], meshes[8], meshes[9], meshes[10]], true, true, false, false, true);
+                pin65464a1b8f894.name = "65464a1b8f8941666074500942";
+                pin65464a1b8f894.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
+                pin65464a1b8f894.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, Math.PI, 0), 0);
+                pin65464a1b8f894.rotationQuaternion.x = 0;
+                pin65464a1b8f894.rotationQuaternion.y = 1;
+                pin65464a1b8f894.rotationQuaternion.z = 0;
+                pin65464a1b8f894.rotationQuaternion.w = 0;
+                pin65464a1b8f894.position.y = -0.5;
+                pin65464a1b8f894.position.x = 1;
+                pin65464a1b8f894.position.z = -8;
+                pin65464a1b8f894.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+                shadowGenerator65464a1b8f894.addShadowCaster(pin65464a1b8f894);
+            });
+            // Điểm đến Núi lửa Nâm Kar
+            BABYLON.SceneLoader.ImportMesh("", "/", "pin.glb", scene, function (meshes) {
+                meshes[1].material = new BABYLON.StandardMaterial("matPin", scene);
+                meshes[1].material.diffuseColor = BABYLON.Color3.FromHexString("#027dff");
+                var pin65464a1b8f894 = BABYLON.Mesh.MergeMeshes([meshes[1], meshes[2], meshes[3], meshes[4], meshes[5], meshes[6], meshes[7], meshes[8], meshes[9], meshes[10]], true, true, false, false, true);
+                pin65464a1b8f894.name = "65464a1b8f8941666074500942";
+                pin65464a1b8f894.scaling = new BABYLON.Vector3(0.3, 0.3, 0.3);
+                pin65464a1b8f894.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, Math.PI, 0), 0);
+                pin65464a1b8f894.rotationQuaternion.x = 0;
+                pin65464a1b8f894.rotationQuaternion.y = 1;
+                pin65464a1b8f894.rotationQuaternion.z = 0;
+                pin65464a1b8f894.rotationQuaternion.w = 0;
+                pin65464a1b8f894.position.y = -0.5;
+                pin65464a1b8f894.position.x = -4.1;
+                pin65464a1b8f894.position.z = 5;
+                pin65464a1b8f894.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+                shadowGenerator65464a1b8f894.addShadowCaster(pin65464a1b8f894);
+            });
+            // // Needle
+            // BABYLON.SceneLoader.ImportMesh("", "/", "needle.glb", scene, function (meshes) {
+            //     meshes[1].material = new BABYLON.StandardMaterial("matPin", scene);
+            //     meshes[1].material.diffuseColor = BABYLON.Color3.FromHexString("#027dff");
+            //     var pin65464a1b8f894 = BABYLON.Mesh.MergeMeshes([meshes[1], meshes[2], meshes[3], meshes[4], meshes[5], meshes[6], meshes[7], meshes[8], meshes[9], meshes[10]], true, true, false, false, true);
+            //     pin65464a1b8f894.name = "65464a1b8f8941666074500942";
+            //     pin65464a1b8f894.scaling = new BABYLON.Vector3(0.4, 0.4, 0.4);
+            //     pin65464a1b8f894.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, Math.PI, 0), 0);
+            //     pin65464a1b8f894.rotationQuaternion.x = 0;
+            //     pin65464a1b8f894.rotationQuaternion.y = 1;
+            //     pin65464a1b8f894.rotationQuaternion.z = 0;
+            //     pin65464a1b8f894.rotationQuaternion.w = 0;
+            //     pin65464a1b8f894.position.y = -0.2;
+            //     pin65464a1b8f894.position.x = -3.1;
+            //     pin65464a1b8f894.position.z = 7.296279;
+            //     pin65464a1b8f894.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
+            //     shadowGenerator65464a1b8f894.addShadowCaster(pin65464a1b8f894);
+            // });
+
+            // Núi Nâm Nung
+            var markerText = "Núi Nâm Nung";
+            var markerName = "1666074298578";
+            marker1666074298578 = BABYLON.MeshBuilder.CreateSphere(markerName, { diameter: 0.2, segments: 64 }, scene);
+            marker1666074298578.material = new BABYLON.StandardMaterial("mat", scene);
+            marker1666074298578.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
+            marker1666074298578.position.y = 0.8;
+            marker1666074298578.position.x = 6.3;
+            marker1666074298578.position.z = 5.4;
+            var path = [new BABYLON.Vector3(0, 1, 0), new BABYLON.Vector3(0, 0, 0)];
+            var tube1666074298578 = BABYLON.MeshBuilder.CreateTube("tube", { path: path, radius: 0.02 }, scene);
+            tube1666074298578.material = new BABYLON.StandardMaterial("mat", scene);
+            tube1666074298578.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
+            tube1666074298578.parent = marker1666074298578;
+            var font_size = 45;
+            var font = font_size + "px Arial Narrow";
+            var planeHeight = 0.5;
+            var DTHeight = 1.2 * font_size;
+            var ratio = planeHeight / DTHeight;
+            var temp = new BABYLON.DynamicTexture("DynamicTexture", 64, scene);
+            var tmpctx = temp.getContext();
+            tmpctx.font = font;
+            var DTWidth = tmpctx.measureText(markerText).width + 20;
+            var planeWidth = DTWidth * ratio;
+            var dynamicTexture = new BABYLON.DynamicTexture("DynamicTexture", { width: DTWidth | 0, height: DTHeight | 0 }, scene, false);
+            var mat1666074298578 = new BABYLON.StandardMaterial("mat", scene);
+            mat1666074298578.diffuseTexture = dynamicTexture;
+            mat1666074298578.backFaceCulling = false;
+            dynamicTexture.drawText(markerText, null, null, font, "#027dff", "#ffffff", true);
+            var plane1666074298578 = BABYLON.MeshBuilder.CreatePlane("plane", { width: planeWidth, height: planeHeight }, scene, false, BABYLON.Mesh.DOUBLESIDE);
+            plane1666074298578.position.y = 1.25;
+            plane1666074298578.parent = marker1666074298578;
+            plane1666074298578.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+            plane1666074298578.material = mat1666074298578;
+            // add actionManager on each cyl
+            plane1666074298578.actionManager = new BABYLON.ActionManager(scene);
+            
+            plane1666074298578.actionManager.registerAction(
+                new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+                function(event){
+                    var pickedMesh = event.meshUnderPointer; 
+
+                    window.open("nuinamnung.html");
+                })
+            );
+            // shadowGenerator65464a1b8f894.addShadowCaster(marker1666074298578);
+
+            // Núi Nâm Kar
+            var markerText = "Núi lửa Nâm Kar";
+            var markerName = "1";
+            marker1 = BABYLON.MeshBuilder.CreateSphere(markerName, { diameter: 0.2, segments: 64 }, scene);
+            marker1.material = new BABYLON.StandardMaterial("mat", scene);
+            marker1.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
+            marker1.position.y = -0.5;
+            marker1.position.x = -4;
+            marker1.position.z = 5.5;
+            var path = [new BABYLON.Vector3(0, 2, 0), new BABYLON.Vector3(0, 0, 0)];
+            var tube1 = BABYLON.MeshBuilder.CreateTube("tube", { path: path, radius: 0.02 }, scene);
+            tube1.material = new BABYLON.StandardMaterial("mat", scene);
+            tube1.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
+            tube1.parent = marker1;
+            var font_size = 45;
+            var font = font_size + "px Arial Narrow";
+            var planeHeight = 0.5;
+            var DTHeight = 1.2 * font_size;
+            var ratio = planeHeight / DTHeight;
+            var temp = new BABYLON.DynamicTexture("DynamicTexture", 64, scene);
+            var tmpctx = temp.getContext();
+            tmpctx.font = font;
+            var DTWidth = tmpctx.measureText(markerText).width + 20;
+            var planeWidth = DTWidth * ratio;
+            var dynamicTexture = new BABYLON.DynamicTexture("DynamicTexture", { width: DTWidth | 0, height: DTHeight | 0 }, scene, false);
+            var mat1 = new BABYLON.StandardMaterial("mat", scene);
+            mat1.diffuseTexture = dynamicTexture;
+            mat1.backFaceCulling = false;
+            dynamicTexture.drawText(markerText, null, null, font, "#027dff", "#ffffff", true);
+            var plane1 = BABYLON.MeshBuilder.CreatePlane("plane", { width: planeWidth, height: planeHeight }, scene, false, BABYLON.Mesh.DOUBLESIDE);
+            plane1.position.y = 2.25;
+            plane1.parent = marker1;
+            plane1.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+            plane1.material = mat1;
+            // add actionManager on each cyl
+            plane1.actionManager = new BABYLON.ActionManager(scene);
+            
+            plane1.actionManager.registerAction(
+                new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+                function(event){
+                    var pickedMesh = event.meshUnderPointer; 
+
+                    window.open("nuiluanamkar.html");
+                })
+            );
+            // shadowGenerator65464a1b8f894.addShadowCaster(marker1);
+            
+            // Hồ Ea Snô
+            var markerText = "Hồ Ea Snô";
+            var markerName = "2";
+            marker2 = BABYLON.MeshBuilder.CreateSphere(markerName, { diameter: 0.2, segments: 64 }, scene);
+            marker2.material = new BABYLON.StandardMaterial("mat", scene);
+            marker2.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
+            marker2.position.y = -0.6;
+            marker2.position.x = -0.8;
+            marker2.position.z = -3.2;
+            var path = [new BABYLON.Vector3(0, 1.2, 0), new BABYLON.Vector3(0, 0, 0)];
+            var tube2 = BABYLON.MeshBuilder.CreateTube("tube", { path: path, radius: 0.02 }, scene);
+            tube2.material = new BABYLON.StandardMaterial("mat", scene);
+            tube2.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
+            tube2.parent = marker2;
+            var font_size = 45;
+            var font = font_size + "px Arial Narrow";
+            var planeHeight = 0.5;
+            var DTHeight = 1.2 * font_size;
+            var ratio = planeHeight / DTHeight;
+            var temp = new BABYLON.DynamicTexture("DynamicTexture", 64, scene);
+            var tmpctx = temp.getContext();
+            tmpctx.font = font;
+            var DTWidth = tmpctx.measureText(markerText).width + 20;
+            var planeWidth = DTWidth * ratio;
+            var dynamicTexture = new BABYLON.DynamicTexture("DynamicTexture", { width: DTWidth | 0, height: DTHeight | 0 }, scene, false);
+            var mat2 = new BABYLON.StandardMaterial("mat", scene);
+            mat2.diffuseTexture = dynamicTexture;
+            mat2.backFaceCulling = false;
+            dynamicTexture.drawText(markerText, null, null, font, "#027dff", "#ffffff", true);
+            var plane2 = BABYLON.MeshBuilder.CreatePlane("plane", { width: planeWidth, height: planeHeight }, scene, false, BABYLON.Mesh.DOUBLESIDE);
+            plane2.position.y = 1.45;
+            plane2.parent = marker2;
+            plane2.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+            plane2.material = mat2;
+
+            // add actionManager on each cyl
+            plane2.actionManager = new BABYLON.ActionManager(scene);
+            
+            plane2.actionManager.registerAction(
+                new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+                function(event){
+                    var pickedMesh = event.meshUnderPointer; 
+
+                    window.open("hoeasno.html");
+                })
+            );
+            // shadowGenerator65464a1b8f894.addShadowCaster(marker2);
+
+            // Hang Động núi lửa Chư Bluk
+            var markerText = "Hang Động núi lửa Buôn Choah";
+            var markerName = "3";
+            marker3 = BABYLON.MeshBuilder.CreateSphere(markerName, { diameter: 0.2, segments: 64 }, scene);
+            marker3.material = new BABYLON.StandardMaterial("mat", scene);
+            marker3.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
+            marker3.position.y = -0.6;
+            marker3.position.x = -2;
+            marker3.position.z = -4.5;
+            var path = [new BABYLON.Vector3(0, 0.5, 0), new BABYLON.Vector3(0, 0, 0)];
+            var tube3 = BABYLON.MeshBuilder.CreateTube("tube", { path: path, radius: 0.02 }, scene);
+            tube3.material = new BABYLON.StandardMaterial("mat", scene);
+            tube3.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
+            tube3.parent = marker3;
+            var font_size = 45;
+            var font = font_size + "px Arial Narrow";
+            var planeHeight = 0.5;
+            var DTHeight = 1.2 * font_size;
+            var ratio = planeHeight / DTHeight;
+            var temp = new BABYLON.DynamicTexture("DynamicTexture", 64, scene);
+            var tmpctx = temp.getContext();
+            tmpctx.font = font;
+            var DTWidth = tmpctx.measureText(markerText).width + 20;
+            var planeWidth = DTWidth * ratio;
+            var dynamicTexture = new BABYLON.DynamicTexture("DynamicTexture", { width: DTWidth | 0, height: DTHeight | 0 }, scene, false);
+            var mat3 = new BABYLON.StandardMaterial("mat", scene);
+            mat3.diffuseTexture = dynamicTexture;
+            mat3.backFaceCulling = false;
+            dynamicTexture.drawText(markerText, null, null, font, "#027dff", "#ffffff", true);
+            var plane3 = BABYLON.MeshBuilder.CreatePlane("plane", { width: planeWidth, height: planeHeight }, scene, false, BABYLON.Mesh.DOUBLESIDE);
+            plane3.position.y = 0.75;
+            plane3.parent = marker3;
+            plane3.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
+            plane3.material = mat3;
+            // add actionManager on each cyl
+            plane3.actionManager = new BABYLON.ActionManager(scene);
+            
+            plane3.actionManager.registerAction(
+                new BABYLON.ExecuteCodeAction(BABYLON.ActionManager.OnPickTrigger, 
+                function(event){
+                    var pickedMesh = event.meshUnderPointer; 
+
+                    window.open("hangdong.html");
+                })
+            );
+            // shadowGenerator65464a1b8f894.addShadowCaster(marker3);
+        
+
+
+            //  // The first parameter can be used to specify which mesh to import. Here we import all meshes
+            // BABYLON.SceneLoader.ImportMesh("", "/", "krn.glb", scene, function (newMeshes) {
+            //     // Set the target of the camera to the first imported mesh
+            //     camera.target = newMeshes[0];
+            // });
+
+            // // Move the light with the camera
+            // scene.registerBeforeRender(function () {
+            //     light.position = camera.position;
+            // });
+
 
             return scene;
         };
+                window.initFunction = async function() {
+                    
+                    
+                    
+                    var asyncEngineCreation = async function() {
+                        try {
+                        return createDefaultEngine();
+                        } catch(e) {
+                        console.log("the available createEngine function failed. Creating the default engine instead");
+                        return createDefaultEngine();
+                        }
+                    }
 
-        const scene = createScene(); //Call the createScene function
-        // Register a render loop to repeatedly render the scene
-        engine.runRenderLoop(function () {
-                scene.render();
+                    window.engine = await asyncEngineCreation();
+        if (!engine) throw 'engine should not be null.';
+        startRenderLoop(engine, canvas);
+        window.scene = delayCreateScene();};
+        initFunction().then(() => {sceneToRender = scene                    
         });
-        // Watch for browser/canvas resize events
+
+        // Resize
         window.addEventListener("resize", function () {
-                engine.resize();
+            engine.resize();
         });
-	</script>
-
-   </body>
-
+    </script>
+</body>
 </html>
