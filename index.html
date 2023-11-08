@@ -52,62 +52,11 @@
                 scene.activeCamera.alpha += Math.PI;
             });
 
-            //BABYLON.SceneLoader.ImportMesh("", "https://3d-mapper.com/wp-content/plugins/3D-Mapper/assets/elements/", "pin.glb", scene, function (meshes) {
-                // meshes[1].material = new BABYLON.StandardMaterial("matPin", scene);
-                // meshes[1].material.diffuseColor = BABYLON.Color3.FromHexString("#ff4302");
-                // var pin65464a1b8f894 = BABYLON.Mesh.MergeMeshes([meshes[1], meshes[2], meshes[3], meshes[4], meshes[5], meshes[6], meshes[7], meshes[8], meshes[9], meshes[10]], true, true, false, false, true);
-                // pin65464a1b8f894.name = "65464a1b8f8941666074557013";
-                // pin65464a1b8f894.scaling = new BABYLON.Vector3(1, 1, 1);
-                // pin65464a1b8f894.rotationQuaternion = new BABYLON.Quaternion.RotationAxis(new BABYLON.Vector3(0, Math.PI, 0), 0);
-                // pin65464a1b8f894.rotationQuaternion.x = 0;
-                // pin65464a1b8f894.rotationQuaternion.y = 1;
-                // pin65464a1b8f894.rotationQuaternion.z = 0;
-                // pin65464a1b8f894.rotationQuaternion.w = 0;
-                // pin65464a1b8f894.position.y = 15.459481;
-                // pin65464a1b8f894.position.x = 31.971593;
-                // pin65464a1b8f894.position.z = 22.395541;
-                // pin65464a1b8f894.billboardMode = BABYLON.Mesh.BILLBOARDMODE_Y;
-                // shadowGenerator65464a1b8f894.addShadowCaster(pin65464a1b8f894);
-            //});
-
-            // var markerText = "Grindelwald";
-            // var markerName = "1666074298578";
-            // marker1666074298578 = BABYLON.MeshBuilder.CreateSphere(markerName, { diameter: 0.5, segments: 64 }, scene);
-            // marker1666074298578.material = new BABYLON.StandardMaterial("mat", scene);
-            // marker1666074298578.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
-            // marker1666074298578.position.y = 1.290156;
-            // marker1666074298578.position.x = -13.304495;
-            // marker1666074298578.position.z = 12.347064;
-            // var path = [new BABYLON.Vector3(0, 7.5, 0), new BABYLON.Vector3(0, 0, 0)];
-            // var tube1666074298578 = BABYLON.MeshBuilder.CreateTube("tube", { path: path, radius: 0.09 }, scene);
-            // tube1666074298578.material = new BABYLON.StandardMaterial("mat", scene);
-            // tube1666074298578.material.diffuseColor = BABYLON.Color3.FromHexString("#ffffff");
-            // tube1666074298578.parent = marker1666074298578;
-            // var font_size = 48;
-            // var font = font_size + "px Arial";
-            // var planeHeight = 2;
-            // var DTHeight = 1.4 * font_size;
-            // var ratio = planeHeight / DTHeight;
-            // var temp = new BABYLON.DynamicTexture("DynamicTexture", 64, scene);
-            // var tmpctx = temp.getContext();
-            // tmpctx.font = font;
-            // var DTWidth = tmpctx.measureText(markerText).width + 40;
-            // var planeWidth = DTWidth * ratio;
-            // var dynamicTexture = new BABYLON.DynamicTexture("DynamicTexture", { width: DTWidth | 0, height: DTHeight | 0 }, scene, false);
-            // var mat1666074298578 = new BABYLON.StandardMaterial("mat", scene);
-            // mat1666074298578.diffuseTexture = dynamicTexture;
-            // mat1666074298578.backFaceCulling = false;
-            // dynamicTexture.drawText(markerText, null, null, font, "#000000", "#ffffff", true);
-            // var plane1666074298578 = BABYLON.MeshBuilder.CreatePlane("plane", { width: planeWidth, height: planeHeight }, scene, false, BABYLON.Mesh.DOUBLESIDE);
-            // plane1666074298578.position.y = 8.5;
-            // plane1666074298578.parent = marker1666074298578;
-            // plane1666074298578.billboardMode = BABYLON.Mesh.BILLBOARDMODE_ALL;
-            // plane1666074298578.material = mat1666074298578;
-            // shadowGenerator65464a1b8f894.addShadowCaster(marker1666074298578);
+            
 
             return scene;
         };
-        
+
         const scene = createScene(); //Call the createScene function
         // Register a render loop to repeatedly render the scene
         engine.runRenderLoop(function () {
